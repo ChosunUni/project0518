@@ -1,0 +1,87 @@
+body, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;		/* 해당 태그의 list-style을 none으로 하는 것으로 ●을 제거한다 */
+}
+
+a {
+    color: inherit;		/* 부모 엘리먼트의 값을 물려받는다 */
+    text-decoration: none;
+    background: #343a40; /* 해당 태그의 text-decoration을 none으로 하는 것으로 밑줄을 제거한다 */
+}
+/* 2차 이상의 메뉴만 none 값을 주기 */
+.top-bar__menu-box-1 > ul ul {
+    display: none;
+}
+a {
+    font-size: 1rem;
+    color: black;
+}
+.top-bar__menu-box-1 ul > li > a {
+    display: block;
+    font-size: 1rem;
+    padding: 5px 30px;
+    border: 5px solid darkgrey;
+}
+/* 모든 메뉴를 마우스 인식 시 배경색을 변경 */
+.top-bar__menu-box-1 ul > li:hover > a {
+    background-color: #555;
+}
+
+/* 2차 메뉴가 보이도록 만들어 보자 */
+.top-bar__menu-box-1 > ul > li:hover > ul {
+    display: block;
+}
+/* 1차 메뉴를 제한 구역으로 설정 */
+.top-bar__menu-box-1 > ul > li {
+    position: relative;
+}
+
+/* 2차 메뉴에 absolute 값을 주기 */
+.top-bar__menu-box-1 > ul > li > ul {
+    position: absolute;
+    top: 100%;		/* 2차 메뉴를 1차 메뉴의 아래에 위치시킨다 */
+    left: 0;		/* 2차 메뉴를 1차 메뉴의 왼쪽 벽에 붙인다 */
+    width: 100%;		/* 부모의 너비를 그대로 받아온다 */
+}
+
+html {
+    font-family: 'Ubuntu', sans-serif;
+}
+/* 메뉴 박스의 모서리를 둥글게 해주자 */
+.top-bar__menu-box-1 > ul {
+    border-radius: 20px;
+}
+.top-bar__menu-box-1 ul ul li a {
+    color: white;
+}
+
+.top-bar__menu-box-1 button[type="submit"][class="btn btn-outline-light"] {
+    width: 200px; /* 너비 조정 */
+}
+/*내 정보 버튼(공동으로 들어가는게 topbar이기 때문에 여기다 넣었음 */
+.small-button {
+    font-size: 0.8rem; /* 작은 크기의 폰트 크기 */
+    padding: 0.2rem 0.5rem; /* 작은 패딩 */
+    display: inline-block;
+}
+.d-flex.align-items-center {
+    border: 1px solid #ccc; /* 테두리 추가 */
+    padding: 10px; /* 패딩 설정 */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+p {
+    font-size: 0.8rem; /* 폰트 크기를 작게 설정 */
+    margin-bottom: 0.5rem; /* 아래 여백을 조정 */
+    color: white;
+}
+.d-flex.align-items-center p {
+    color: white; /* 흰색으로 글자 색상 설정 */
+}
+
+.d-flex.align-items-center .form-inline {
+    margin-left: 10px;
+}

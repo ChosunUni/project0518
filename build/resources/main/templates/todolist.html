@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>일몰시 To Do List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/topbar.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../css/todolist.css">
+    <style>
+
+        .todo-wrap table {
+            margin-left: 20px;
+        }
+
+        .sat {
+            color: blue !important;
+        }
+        .sun, .holiday {
+            color: red !important;
+        }
+        .circle-icon-btn i{
+            font-size: 10px;
+        }
+        /*.todo-wrap{
+            display: flex;
+            justify-content: flex-end;
+        }*/
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="../timer"><img src="../img/icon.png" alt="일몰 이미지" class="sunset-image" width = "70px">
+                <span style="font-size: 0.8em; vertical-align: middle;"></span></a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-labe="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between flex-column flex-md-row" id="navbarSupportedContent">
+            <div th:with="loginMember=${session.loginMember}" class="d-flex align-items-center">
+                <div th:if="${loginMember != null && loginMember.memberName != null}" class="mr-md-auto mb-2 mb-md-0">
+                    <p th:text="${loginMember.memberName} + ' 님'"></p>
+                    <!--<button type="submit" class="btn btn-outline-light small-button mb-2 mb-md-0 mr-md-2">내 정보</button>-->
+                    <form action="/index" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-outline-light small-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "top-bar con-min-width">
+        <div class ="con">
+            <nav class="top-bar__menu-box-1">
+                <ul>
+                    <li>
+                        <button type="submit" class="btn btn-outline-light">menu</button>
+                        <ul>
+                            <li><a href="/timer">Timer</a></li>
+                            <li><a href="/board">게시판</a></li>
+                            <li><a href="/total">Total time</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+</nav>
+
+
+
+<!--<h1>투두리스트</h1> 동완 합침-->
+<div class="wrapper">
+    <header>
+        <div class="nav">
+            <button id="prev" class="material-icons"> chevron_left </button>
+            <p class="current-date"></p>
+            <button class="material-icons"> chevron_right </button>
+        </div>
+    </header>
+    <div class="calendar">
+        <ul class="weeks">
+            <li>Sun</li>
+            <li>Mon</li>
+            <li>Tue</li>
+            <li>Wed</li>
+            <li>Thu</li>
+            <li>Fri</li>
+            <li>Sat</li>
+        </ul>
+        <ul class="days">
+
+        </ul>
+    </div>
+    <script src="calender.js"></script>
+</div>
+<div class="main">
+    <div class="content-wrap">
+            <div class="todo-wrap">
+                <div class="todo-title"><strong>Todo List</strong></div>
+                <div class="input-wrap">
+                    <div class="add-task">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                        <form class = "add-task-form" th:action="@{/todo/create}" method="post">
+                        <input name="content" placeholder="오늘의 할 일을 적어보세요!"/>
+                        <input type="hidden" name="email" th:value="${session.loginMember.memberEmail}"/>
+                        <button>작성</button>
+                        </form>
+                    <div class="todo-table-container">
+                        <table>
+                            <tbody>
+                            <tr th:each="todoentity : ${toDoEntityList}" >
+                            <!--<td th:text="${todoentity.idx}"></td>-->
+                            <!-- 동그란 아이콘 -->
+                                <td>
+                                    <button class="circle-icon-btn" th:data-id="${todoentity.idx}" onclick="toggleTodoStatus(this.getAttribute('data-id'))">
+                                        <i class="fas fa-circle"></i>
+                                    </button>
+                                </td>
+                                <!--<td>
+                                    <div class="todo-button">
+                                        <button class="circle-icon-btn" th:data-id="${todoentity.idx}" onclick="deleteItem(this.getAttribute('data-id'))">
+                                            <i class="fas fa-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>-->
+                            <!-- 여기서 completed 값에 따라 클래스를 동적으로 할당하여 스타일을 적용합니다. -->
+                            <!--<td th:text="${todoentity.content}" th:class="${todoentity.completed} ? 'completed' : ''"></td>
+                            <td th:text="${todoentity.completed}"></td>-->
+                                <td onclick="toggleTodoStatus(${todoentity.idx})" th:class="${todoentity.completed} ? 'completed' : ''">
+                                    <div class="todo-content">
+                                        <span th:text="${todoentity.content}"></span>
+                                    </div>
+                                </td>
+
+                                <!--<td>
+                                    <button class="delete-btn" th:data-id="${todoentity.idx}" onclick="deleteItem(this.getAttribute('data-id'))">삭제</button></td>
+                                <td><button class="revise-btn" th:data-id="${todoentity.idx}" onclick="openModal(this.getAttribute('data-id'))">수정</button></td>-->
+                            <!-- HTML 코드 -->
+                                <td>
+                                    <div class ="todo-button">
+                                        <button class="edit-btn" th:data-id="${todoentity.idx}" onclick="openModal(this.getAttribute('data-id'))">
+                                            <i class="fas fa-edit"></i> <!-- 여기에 사용할 아이콘 클래스를 적절히 설정해주세요 -->
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class ="todo-button">
+                                    <button class="delete-btn" th:data-id="${todoentity.idx}" onclick="deleteItem(this.getAttribute('data-id'))">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class ="todo-button">
+                                    <button class="status-btn" th:data-id="${todoentity.idx}" th:data-status="${todoentity.completed}" onclick="toggleTodoStatus(this.getAttribute('data-id'))">
+                                        <i class="fas fa-check-circle"></i> <!-- 여기에 사용할 아이콘 클래스를 적절히 설정해주세요 -->
+                                    </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+                    <!--<table id="calendar" align="center">
+                        <thead>
+                        <tr class="btn-wrap clearfix">
+                            <td>
+                                <label id="prev">
+                                    &#60;
+                                </label>
+                            </td>
+                            <td align="center" id="current-year-month" colspan="5"></td>
+                            <td>
+                                <label id="next">
+                                    &#62;
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "sun" align="center">Sun</td>
+                            <td align="center">Mon</td>
+                            <td align="center">Tue</td>
+                            <td align="center">Wed</td>
+                            <td align="center">Thu</td>
+                            <td align="center">Fri</td>
+                            <td class= "sat" align="center">Sat</td>
+                        </tr>
+                        </thead>
+                        <tbody id="calendar-body" class="calendar-body"></tbody>
+                    </table>-->
+<!--동완 합침-->
+
+
+<div class="modal">
+    <div class="modal_content">
+        <input id="revise" placeholder="내용을 수정해주세요"/>
+        <button type="submit" id="completeBtn" onclick="reviseItem()">완료</button>
+    </div>
+</div>
+<!--동완 합침-->
+<script src ="../js/calender.js" defer></script> <!--동완 합침-->
+<!-- jQuery를 로드하는 스크립트를 추가합니다. -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/todo.js"></script>
+<footer>
+    <div id="quoteContainer">
+        <p id="quote"></p>
+    </div>
+    <script src="../js/quotes.js" defer></script>
+    <style>
+        /* 추가된 CSS */
+        #quoteContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #quote {
+            font-size: 20px;
+            font-style: italic;
+            color: #333;
+        }
+    </style>
+</footer>
+
+</body>
+</html>

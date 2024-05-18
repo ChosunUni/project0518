@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>일몰시 로그인 페이지</title>
+    <meta charset="utf-8">
+    <meta name="keyword" content="일몰시">
+    <meta name="description" content="일몰시">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <img src="../img/icon.png" alt="일몰 이미지" class="sunset-image">
+    <h1>일몰시</h1>
+    <form action="/index" method="post">
+        <br>
+        <input type="text" name="memberEmail" placeholder = "이메일"><br>
+        <input type="password" name="memberPW" placeholder = "비밀번호"><br>
+        <div class="btn_login_wrap">
+            <button type = "submit" class="btn_login" id="log.login">
+                <span class="btn_text">로그인</span>
+            </button>
+        </div>
+        <div th:if="${errorMessage}" style="color: red;">
+            <p th:text="${errorMessage}"></p>
+        </div>
+    </form>
+    <a href="/register"> 회원가입 </a>
+</div>
+<br>
+</body>
+</html>
+

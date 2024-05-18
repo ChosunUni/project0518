@@ -1,0 +1,24 @@
+{{>layouts/header}}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#board}}
+        <tr>
+            <th>{{id}}</th>
+            <td>{{title}}</td>
+            <td>{{content}}</td>
+        </tr>
+    {{/board}}
+    </tbody>
+</table>
+<a href="/board/{{board.id}}/edit" class="btn btn-primary">수정</a>
+<a href="/board/{{board.id}}/delete" class="btn btn-danger">삭제</a>
+<a href="/board">게시글 목록</a>
+{{>comments/_comments}}
+{{>layouts/footer}}

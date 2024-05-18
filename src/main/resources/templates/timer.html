@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일몰시 타이머</title>
+    <!--<link rel="import" href="index.html">-->
+    <link rel="stylesheet" href="../css/timer.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/topbar.css">
+    <link rel="stylesheet" href="../css/clock.css">
+
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="../timer">
+                <img src="../img/icon.png" alt="일몰 이미지" class="sunset-image" width="70px">
+                <span style="font-size: 0.8em; vertical-align: middle;"></span>
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between flex-column flex-md-row" id="navbarSupportedContent">
+            <div th:with="loginMember=${session.loginMember}" class="d-flex align-items-center">
+                <div th:if="${loginMember != null && loginMember.memberName != null}" class="mr-md-auto mb-2 mb-md-0">
+                    <p th:text="${loginMember.memberName} + ' 님'"></p>
+                    <!--<button type="submit" class="btn btn-outline-light small-button mb-2 mb-md-0 mr-md-2">내 정보</button>-->
+                    <form action="/index" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-outline-light small-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+            <!-- 수정된 부분 시작 -->
+            <div class="navbar-nav">
+                <div class="nav-item dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="menuDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="menuDropdown" id="navbarSupportedContent">
+                        <li><a class="dropdown-item" href="/todo">Todo list</a></li>
+                        <li><a class="dropdown-item" href="/board">게시판</a></li>
+                        <li><a class="dropdown-item" href="/total">Total time</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 수정된 부분 끝 -->
+        </div>
+    </div>
+    <div class="top-bar con-min-width">
+        <div class="con">
+            <nav class="top-bar__menu-box-1">
+                <ul>
+                    <li>
+                        <button type="submit" class="btn btn-outline-light">Menu</button>
+                        <ul>
+                            <li><a href="/todo">Todo list</a></li>
+                            <li><a href="/board">게시판</a></li>
+                            <li><a href="/total">Total time</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</nav>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src ="../js/clock.js" defer></script>
+<main class="container">
+    <div class="clock">
+        <!-- 시계에 숫자를 표시하는 요소 -->
+        <div class="hour-mark">1</div>
+        <div class="hour-mark">2</div>
+        <div class="hour-mark">3</div>
+        <div class="hour-mark">4</div>
+        <div class="hour-mark">5</div>
+        <div class="hour-mark">6</div>
+        <div class="hour-mark">7</div>
+        <div class="hour-mark">8</div>
+        <div class="hour-mark">9</div>
+        <div class="hour-mark">10</div>
+        <div class="hour-mark">11</div>
+        <div class="hour-mark" style="left: 30% top: 55%">12</div>
+
+        <div class="hour" id="hour-hand"></div>
+        <div class="minute" id="minute-hand"></div>
+        <div class="second" id="second-hand"></div>
+    </div>
+</main>
+
+<div class="Timer" id="timer">00:00:00</div>
+<div class = "subject-wrap">
+    <div class = "sub-title">
+        <strong>과목 - </strong>
+    </div>
+    <div class ="addsub">
+        <form action="/timer/subject" method="post" class="form-inline">
+            <button class="But1" id="addsub">과목 추가</button>
+            <div class ="subject-dropdown">
+                <input class="select" type="subject" name="subject"> <!--이게 과목 뭐 할지 고르는거-->
+                <input type="hidden" name="email" th:value="${session.loginMember.memberEmail}">
+            </div>
+        </form>
+    </div>
+    <div class = "delsub">
+        <form id="deleteForm" method="post" class="form-inline"       >
+            <button class="But1" id="delsub" type="button" onclick="deleteSubject()">과목 삭제</button>
+            <div class="subject-dropdown">
+                <select class="select" id="subjectselect" name="selectedSubjectId" onchange="callTimerFromServer()">
+                    <option value="" disabled selected hidden>과목선택</option>
+                    <option th:each="entity : ${list}" th:value="${entity.id}" th:text="${entity.subject}"></option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="ButtonContainer">
+        <button class="Button" id="startButton">Start</button>
+        <button class="Button" id="stopButton">Stop</button>
+
+    </div>
+</div>
+
+<script src="../js/timer.js"></script>
+
+
+</body>
+<footer>
+    <div id="quoteContainer">
+        <p id="quote"></p>
+    </div>
+    <script src="../js/quotes.js" defer></script>
+    <style>
+        /* 추가된 CSS */
+        #quoteContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #quote {
+            font-size: 20px;
+            font-style: italic;
+            color: #333;
+        }
+    </style>
+</footer>
+
+
+
+</html>
+
+

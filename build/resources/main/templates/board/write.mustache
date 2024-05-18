@@ -1,0 +1,17 @@
+{{>layouts/header}}
+<form class="container" action="/board/create" method="post">
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <textarea class="form-control" rows="3" name="content"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" style="background-color: #FA7C06; border: none;">Submit</button>
+
+
+
+</form>
+<a href="/board">뒤로가기</a>
+{{>layouts/footer}}

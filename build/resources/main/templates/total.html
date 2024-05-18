@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일몰시 전체 시간</title>
+    <!--<link rel="import" href="index.html">-->
+    <link rel="stylesheet" href="../css/timer.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/total.css">
+    <link rel="stylesheet" href="../css/topbar.css">
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="../timer"><img src="../img/icon.png" alt="일몰 이미지" class="sunset-image" width = "70px">
+                <span style="font-size: 0.8em; vertical-align: middle;"></span></a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-labe="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between flex-column flex-md-row" id="navbarSupportedContent">
+            <div th:with="loginMember=${session.loginMember}" class="d-flex align-items-center">
+                <div th:if="${loginMember != null && loginMember.memberName != null}" class="mr-md-auto mb-2 mb-md-0">
+                    <p th:text="${loginMember.memberName} + ' 님'"></p>
+                    <!--<button type="submit" class="btn btn-outline-light small-button mb-2 mb-md-0 mr-md-2">내 정보</button>-->
+                    <form action="/index" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-outline-light small-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "top-bar con-min-width">
+        <div class ="con">
+            <nav class="top-bar__menu-box-1">
+                <ul>
+                    <li>
+                        <button type="submit" class="btn btn-outline-light">menu</button>
+                        <ul>
+                            <li><a href="/timer">Timer</a></li>
+                            <li><a href="/board">게시판</a></li>
+                            <li><a href="/todo">Todo list</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+</nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 사이드바 엘리먼트를 가져옴
+        const sideBar = document.querySelector('.side-bar');
+        // 메뉴 아이콘 엘리먼트를 가져옴
+        const menuIcon = document.querySelector('.side-bar__icon-1');
+
+        // 클릭 이벤트를 감지하여 사이드바 상태를 변경하는 함수
+        function toggleSideBar() {
+            // 사이드바의 display 속성을 토글하여 보이거나 숨김
+            sideBar.style.display = (sideBar.style.display === 'none') ? 'block' : 'none';
+        }
+
+        // 메뉴 아이콘에 클릭 이벤트 리스너 추가
+        menuIcon.addEventListener('click', toggleSideBar);
+    });
+</script>
+<main class="image">
+    <div th:switch="${totalTime}">
+        <div th:case="*{totalHours &gt;= 6}">
+            <!-- 6시간 이상일 때의 이미지 -->
+                <img src="../img/verygood.png" alt="Good Job!">
+        </div>
+        <div th:case="*{totalHours &gt;= 4}">
+            <!-- 4시간 이상 6시간 미만일 때의 이미지 -->
+                <img src="../img/good.png" alt="Well Done!">
+        </div>
+        <div th:case="*{totalHours &gt;= 2}">
+            <!-- 2시간 이상 4시간 미만일 때의 이미지 -->
+                <img src="../img/soso.png" alt="Keep it Up!">
+        </div>
+        <div th:case="*{totalHours &gt;= 1}">
+            <!-- 1시간 이상 2시간 미만일 때의 이미지 -->
+                <img src="../img/bad.png" alt="Keep Going!">
+        </div>
+        <div th:case="*">
+            <!-- 1시간 미만일 때의 이미지 -->
+                <img src="../img/verybad.png" alt="What is This?">
+        </div>
+    </div>
+    <h1>
+        <center>당신의 공부 시간은
+            <!-- 시간이 1시간 이상일 때만 시간을 표시 -->
+            <span th:if="${#strings.substring(totalTime, 0, 2) != '00'}" th:text="${#strings.substring(totalTime, 0, 2)} + '시간'"></span>
+            <!-- 분이 1분 이상이거나 시간이 1시간 이상일 때 분을 표시 -->
+            <span th:if="${#strings.substring(totalTime, 0, 2) != '00' or #strings.substring(totalTime, 3, 5) != '00'}">
+            <span th:text="${#strings.substring(totalTime, 3, 5).replaceAll('^0+', '')}"></span>분
+        </span>
+            <!-- 초를 항상 표시 -->
+            <span th:text="${#strings.substring(totalTime, 6, 8).replaceAll('^0+', '')}"></span>초입니다! 오늘도 힘내세요!
+        </center>
+    </h1>
+
+</main>
+
+</body>
+<footer>
+    <div id="quoteContainer">
+        <p id="quote"></p>
+    </div>
+    <script src="../js/quotes.js" defer></script>
+    <style>
+        /* 추가된 CSS */
+        #quoteContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #quote {
+            font-size: 20px;
+            font-style: italic;
+            color: #333;
+        }
+    </style>
+</footer>
+
+
+
+</html>
+
+

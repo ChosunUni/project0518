@@ -1,0 +1,71 @@
+
+/* main.css */
+body {
+    font-family:sans-Serif; /* ?⺻ ??Ʈ ?йи??? ???? */
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+    font-family: 'Song Myung', sans-serif; /* ?ϸ??? ???񿡸? Song Myung ??Ʈ?? ??? */
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #fa7c06;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #747474;
+    text-decoration: none;
+}
+.sunset-image {
+    width: px;
+    height: 500;
+    margin-top: 5px;
+    margin-bottom: px;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 95%; /* ??ü ???????? ?ʺ? ?? ȭ?鿡 ?????? ?????մϴ?. */
+    }
+}
+

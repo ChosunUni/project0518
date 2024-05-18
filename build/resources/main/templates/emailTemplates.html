@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification Link</title>
+</head>
+<body>
+<p>열품타입니다. 이메일 인증을 위해 하단 링크를 클릭해주십시오.:</p>
+<!--<a th:href="@{http://localhost:8080/email-verification/{verificationToken}(verificationToken=${verificationToken})}">-->
+<a th:href="@{http://35.216.17.70:8080//email-verification/{verificationToken}(verificationToken=${verificationToken})}">
+    Verify Email
+</a>
+</body>
+</html>

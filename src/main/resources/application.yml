@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force: true
+
+# database 연동 설정
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    #    각자 PC에 만들어놓은 Database이름을 써야 합니다.
+    url: jdbc:mariadb://127.0.0.1:3306/db_study
+    #    mysql에 생성한 사용자 계정 정보를 써야 합니다.
+    username: root
+    password: 1234
+  thymeleaf:
+    cache: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dsejong93@gmail.com
+    password: dgncdcrkqllptztx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # spring data jpa 설정
+  # spring data jpa 설정
+  jpa:
+    open-in-view: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update

@@ -1,0 +1,29 @@
+{{>layouts/header}}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#boardList}}
+        <tr>
+            <th>{{id}}</th>
+            <td><a href="board/{{id}}">{{title}}</td>
+            <td>{{content}}</td>
+        </tr>
+    {{/boardList}}
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary" style="background-color: #FA7C06; border: none;">
+    <a href="/board/write" style="color: white; text-decoration: none;">글작성</a>
+</button>
+{{>layouts/footer}}
+<style>
+    /* 추가된 CSS */
+    a {
+        color: inherit; /* 링크의 색상을 부모 요소의 색상으로 설정 */
+    }
+</style>
