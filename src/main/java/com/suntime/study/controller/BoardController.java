@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-public class BoardController {
+public class BoardController {//
     @Autowired // 스프링 부트가 미리 생성해 놓은 리파지터리 객체 주입(DI)
     private BoardRepository boardRepository;
     @Autowired

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-public class BoardApiController {
+public class BoardApiController { ///
     @Autowired
     private BoardService boardService;
     private BoardService articleService; // 서비스 객체 주입
